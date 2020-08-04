@@ -1,0 +1,39 @@
+{
+  "name": "build-tool-template",
+  "version": "1.0.0",
+  "description": "A template showcasing a transparent build process for the web",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently 'npm:dev-*'",
+    "build": "concurrently 'npm:build-*'",
+    "preview": "npm run serve",
+    "clean": "rm -rf dist/*",
+    "predev": "npm run clean",
+    "prebuild": "npm run clean",
+    "dev-assets": "chokidar 'src/assets/**/*' --initial -c 'npm run assets'",
+    "dev-css": "npm run css -- --watch",
+    "dev-js": "chokidar 'src/**/*.js' --initial -c 'npm run js'",
+    "dev-html": "chokidar 'src/**/*.pug' --initial -c 'npm run html'",
+    "dev-serve": "npm run serve -- --watch",
+    "build-assets": "npm run assets",
+    "build-css": "npm run css -- --style=compressed",
+    "build-js": "npm run js -- --minify",
+    "build-html": "npm run html",
+    "assets": "rsync -avm --include='*/' src/assets/ dist",
+    "css": "sass src:dist",
+    "js": "esbuild --bundle src/app.js --outdir=dist --sourcemap",
+    "html": "pug --out dist --path src/includes src/*.pug",
+    "serve": "browser-sync dist --extensions html --no-open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.12",
+    "chokidar-cli": "^2.1.0",
+    "concurrently": "^5.2.0",
+    "esbuild": "^0.6.16",
+    "pug-cli": "^1.0.0-alpha6",
+    "sass": "^1.26.10"
+  }
+}
